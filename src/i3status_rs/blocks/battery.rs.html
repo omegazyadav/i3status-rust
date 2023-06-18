@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/blocks/battery.rs`."><title>battery.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-be46fdc453a55015.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../i3status_rs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/blocks/battery.rs`."><title>battery.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ba5701c5741a7b69.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="i3status_rs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0 (90c541806 2023-05-31)" data-search-js="search-e077946657036a58.js" data-settings-js="settings-298e1ea74db45b39.js" data-settings-css="settings-7bfb4c59cc6bc502.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../../static.files/source-script-905937fbbdc8e9ea.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f61008743c98d196.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../i3status_rs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -298,16 +298,7 @@
 <a href="#298" id="298">298</a>
 <a href="#299" id="299">299</a>
 <a href="#300" id="300">300</a>
-<a href="#301" id="301">301</a>
-<a href="#302" id="302">302</a>
-<a href="#303" id="303">303</a>
-<a href="#304" id="304">304</a>
-<a href="#305" id="305">305</a>
-<a href="#306" id="306">306</a>
-<a href="#307" id="307">307</a>
-<a href="#308" id="308">308</a>
-<a href="#309" id="309">309</a>
-</pre><pre class="rust"><code><span class="doccomment">//! Information about the internal power supply
+</pre></div><pre class="rust"><code><span class="doccomment">//! Information about the internal power supply
 //!
 //! This block can display the current battery state (Full, Charging or Discharging), percentage
 //! charged and estimate time until (dis)charged for an internal power supply.
@@ -386,41 +377,41 @@
 </span><span class="attr">#[derive(Deserialize, Debug, SmartDefault)]
 #[serde(deny_unknown_fields, default)]
 </span><span class="kw">pub struct </span>Config {
-    device: <span class="prelude-ty">Option</span>&lt;String&gt;,
-    driver: BatteryDriver,
-    model: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="kw">pub </span>device: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="kw">pub </span>driver: BatteryDriver,
+    <span class="kw">pub </span>model: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="attr">#[default(<span class="number">10</span>.into())]
-    </span>interval: Seconds,
-    format: FormatConfig,
-    full_format: FormatConfig,
-    charging_format: FormatConfig,
-    empty_format: FormatConfig,
-    not_charging_format: FormatConfig,
-    missing_format: FormatConfig,
+    </span><span class="kw">pub </span>interval: Seconds,
+    <span class="kw">pub </span>format: FormatConfig,
+    <span class="kw">pub </span>full_format: FormatConfig,
+    <span class="kw">pub </span>charging_format: FormatConfig,
+    <span class="kw">pub </span>empty_format: FormatConfig,
+    <span class="kw">pub </span>not_charging_format: FormatConfig,
+    <span class="kw">pub </span>missing_format: FormatConfig,
     <span class="attr">#[default(<span class="number">60.0</span>)]
-    </span>info: f64,
+    </span><span class="kw">pub </span>info: f64,
     <span class="attr">#[default(<span class="number">60.0</span>)]
-    </span>good: f64,
+    </span><span class="kw">pub </span>good: f64,
     <span class="attr">#[default(<span class="number">30.0</span>)]
-    </span>warning: f64,
+    </span><span class="kw">pub </span>warning: f64,
     <span class="attr">#[default(<span class="number">15.0</span>)]
-    </span>critical: f64,
+    </span><span class="kw">pub </span>critical: f64,
     <span class="attr">#[default(<span class="number">95.0</span>)]
-    </span>full_threshold: f64,
+    </span><span class="kw">pub </span>full_threshold: f64,
     <span class="attr">#[default(<span class="number">7.5</span>)]
-    </span>empty_threshold: f64,
+    </span><span class="kw">pub </span>empty_threshold: f64,
 }
 
 <span class="attr">#[derive(Deserialize, Debug, SmartDefault)]
 #[serde(rename_all = <span class="string">&quot;snake_case&quot;</span>)]
-</span><span class="kw">enum </span>BatteryDriver {
+</span><span class="kw">pub enum </span>BatteryDriver {
     <span class="attr">#[default]
     </span>Sysfs,
     ApcUps,
     Upower,
 }
 
-<span class="kw">pub async fn </span>run(config: Config, <span class="kw-2">mut </span>api: CommonApi) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+<span class="kw">pub async fn </span>run(config: <span class="kw-2">&amp;</span>Config, api: <span class="kw-2">&amp;</span>CommonApi) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
     <span class="kw">let </span>format = config.format.with_default(<span class="string">&quot; $icon $percentage &quot;</span>)<span class="question-mark">?</span>;
     <span class="kw">let </span>format_full = config.full_format.with_default(<span class="string">&quot; $icon &quot;</span>)<span class="question-mark">?</span>;
     <span class="kw">let </span>charging_format = config.charging_format.with_default_format(<span class="kw-2">&amp;</span>format);
@@ -428,30 +419,21 @@
     <span class="kw">let </span>format_not_charging = config.not_charging_format.with_default(<span class="string">&quot; $icon &quot;</span>)<span class="question-mark">?</span>;
     <span class="kw">let </span>missing_format = config.missing_format.with_default(<span class="string">&quot; $icon &quot;</span>)<span class="question-mark">?</span>;
 
-    <span class="kw">let </span>dev_name = DeviceName::new(config.device)<span class="question-mark">?</span>;
+    <span class="kw">let </span>dev_name = DeviceName::new(config.device.clone())<span class="question-mark">?</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>device: Box&lt;<span class="kw">dyn </span>BatteryDevice + Send + Sync&gt; = <span class="kw">match </span>config.driver {
-        BatteryDriver::Sysfs =&gt; {
-            Box::new(sysfs::Device::new(dev_name, config.model, config.interval))
-        }
+        BatteryDriver::Sysfs =&gt; Box::new(sysfs::Device::new(
+            dev_name,
+            config.model.clone(),
+            config.interval,
+        )),
         BatteryDriver::ApcUps =&gt; Box::new(apc_ups::Device::new(dev_name, config.interval).<span class="kw">await</span><span class="question-mark">?</span>),
-        BatteryDriver::Upower =&gt; Box::new(upower::Device::new(dev_name, config.model).<span class="kw">await</span><span class="question-mark">?</span>),
+        BatteryDriver::Upower =&gt; {
+            Box::new(upower::Device::new(dev_name, config.model.clone()).<span class="kw">await</span><span class="question-mark">?</span>)
+        }
     };
 
     <span class="kw">loop </span>{
-        <span class="comment">// `api.recoverable` doesn&#39;t work in this case because Rust&#39;s type system is not expressive
-        // enough. &quot;captured variable cannot escape `FnMut` closure body&quot;.
-        </span><span class="kw">let </span><span class="kw-2">mut </span>info = <span class="kw">loop </span>{
-            <span class="kw">match </span>device.get_info().<span class="kw">await </span>{
-                <span class="prelude-val">Ok</span>(res) =&gt; <span class="kw">break </span>res,
-                <span class="prelude-val">Err</span>(err) =&gt; {
-                    api.set_error(err).<span class="kw">await</span><span class="question-mark">?</span>;
-                    <span class="macro">select! </span>{
-                        <span class="kw">_ </span>= tokio::time::sleep(api.error_interval) =&gt; (),
-                        <span class="kw">_ </span>= api.wait_for_update_request() =&gt; (),
-                    }
-                }
-            }
-        };
+        <span class="kw">let </span><span class="kw-2">mut </span>info = device.get_info().<span class="kw">await</span><span class="question-mark">?</span>;
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(info) = <span class="kw-2">&amp;mut </span>info {
             <span class="kw">if </span>info.capacity &gt;= config.full_threshold {
@@ -616,5 +598,4 @@
         })
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="i3status_rs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

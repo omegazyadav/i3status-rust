@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/formatting/formatter.rs`."><title>formatter.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" disabled href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-be46fdc453a55015.css"><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-98a684e84ae5b08b.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../i3status_rs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/formatting/formatter.rs`."><title>formatter.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ba5701c5741a7b69.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="i3status_rs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0 (90c541806 2023-05-31)" data-search-js="search-e077946657036a58.js" data-settings-js="settings-298e1ea74db45b39.js" data-settings-css="settings-7bfb4c59cc6bc502.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../../static.files/source-script-905937fbbdc8e9ea.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f61008743c98d196.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../i3status_rs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -590,9 +590,51 @@
 <a href="#590" id="590">590</a>
 <a href="#591" id="591">591</a>
 <a href="#592" id="592">592</a>
-</pre><pre class="rust"><code><span class="kw">use </span>chrono::format::{Item, StrftimeItems};
+<a href="#593" id="593">593</a>
+<a href="#594" id="594">594</a>
+<a href="#595" id="595">595</a>
+<a href="#596" id="596">596</a>
+<a href="#597" id="597">597</a>
+<a href="#598" id="598">598</a>
+<a href="#599" id="599">599</a>
+<a href="#600" id="600">600</a>
+<a href="#601" id="601">601</a>
+<a href="#602" id="602">602</a>
+<a href="#603" id="603">603</a>
+<a href="#604" id="604">604</a>
+<a href="#605" id="605">605</a>
+<a href="#606" id="606">606</a>
+<a href="#607" id="607">607</a>
+<a href="#608" id="608">608</a>
+<a href="#609" id="609">609</a>
+<a href="#610" id="610">610</a>
+<a href="#611" id="611">611</a>
+<a href="#612" id="612">612</a>
+<a href="#613" id="613">613</a>
+<a href="#614" id="614">614</a>
+<a href="#615" id="615">615</a>
+<a href="#616" id="616">616</a>
+<a href="#617" id="617">617</a>
+<a href="#618" id="618">618</a>
+<a href="#619" id="619">619</a>
+<a href="#620" id="620">620</a>
+<a href="#621" id="621">621</a>
+<a href="#622" id="622">622</a>
+<a href="#623" id="623">623</a>
+<a href="#624" id="624">624</a>
+<a href="#625" id="625">625</a>
+<a href="#626" id="626">626</a>
+<a href="#627" id="627">627</a>
+<a href="#628" id="628">628</a>
+<a href="#629" id="629">629</a>
+<a href="#630" id="630">630</a>
+<a href="#631" id="631">631</a>
+<a href="#632" id="632">632</a>
+<a href="#633" id="633">633</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>chrono::format::{Item, StrftimeItems};
 <span class="kw">use </span>chrono::{Local, Locale};
 <span class="kw">use </span>once_cell::sync::Lazy;
+<span class="kw">use </span>unicode_segmentation::UnicodeSegmentation;
 
 <span class="kw">use </span>std::fmt::Debug;
 <span class="kw">use </span>std::iter::repeat;
@@ -608,8 +650,11 @@
 <span class="kw">const </span>DEFAULT_STR_MIN_WIDTH: usize = <span class="number">0</span>;
 <span class="kw">const </span>DEFAULT_STR_MAX_WIDTH: usize = usize::MAX;
 <span class="kw">const </span>DEFAULT_STR_ROT_INTERVAL: <span class="prelude-ty">Option</span>&lt;f64&gt; = <span class="prelude-val">None</span>;
+<span class="kw">const </span>DEFAULT_STR_ROT_SEP: <span class="prelude-ty">Option</span>&lt;String&gt; = <span class="prelude-val">None</span>;
 
-<span class="kw">const </span>DEFAULT_BAR_WIDTH: usize = <span class="number">5</span>;
+<span class="kw">const </span>DEFAULT_BAR_VERTICAL: bool = <span class="bool-val">false</span>;
+<span class="kw">const </span>DEFAULT_BAR_WIDTH_HORIZONTAL: usize = <span class="number">5</span>;
+<span class="kw">const </span>DEFAULT_BAR_WIDTH_VERTICAL: usize = <span class="number">1</span>;
 <span class="kw">const </span>DEFAULT_BAR_MAX_VAL: f64 = <span class="number">100.0</span>;
 
 <span class="kw">const </span>DEFAULT_NUMBER_WIDTH: usize = <span class="number">2</span>;
@@ -622,6 +667,7 @@
     max_width: DEFAULT_STR_MAX_WIDTH,
     rot_interval_ms: <span class="prelude-val">None</span>,
     init_time: <span class="prelude-val">None</span>,
+    rot_separator: <span class="prelude-val">None</span>,
 };
 
 <span class="comment">// TODO: split those defaults
@@ -656,6 +702,7 @@
             <span class="kw">let </span><span class="kw-2">mut </span>min_width = DEFAULT_STR_MIN_WIDTH;
             <span class="kw">let </span><span class="kw-2">mut </span>max_width = DEFAULT_STR_MAX_WIDTH;
             <span class="kw">let </span><span class="kw-2">mut </span>rot_interval = DEFAULT_STR_ROT_INTERVAL;
+            <span class="kw">let </span><span class="kw-2">mut </span>rot_separator = DEFAULT_STR_ROT_SEP;
             <span class="kw">for </span>arg <span class="kw">in </span>args {
                 <span class="kw">match </span>arg.key {
                     <span class="string">&quot;min_width&quot; </span>| <span class="string">&quot;min_w&quot; </span>=&gt; {
@@ -674,6 +721,9 @@
                                 .parse()
                                 .error(<span class="string">&quot;Interval must be a positive number&quot;</span>)<span class="question-mark">?</span>,
                         );
+                    }
+                    <span class="string">&quot;rot_separator&quot; </span>=&gt; {
+                        rot_separator = <span class="prelude-val">Some</span>(arg.val.to_string());
                     }
                     other =&gt; {
                         <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">&quot;Unknown argument for &#39;str&#39;: &#39;{other}&#39;&quot;</span>)));
@@ -695,6 +745,7 @@
                 max_width,
                 rot_interval_ms: rot_interval.map(|x| (x * <span class="number">1e3</span>) <span class="kw">as </span>u64),
                 init_time: <span class="prelude-val">Some</span>(Instant::now()),
+                rot_separator,
             }))
         }
         <span class="string">&quot;pango-str&quot; </span>=&gt; {
@@ -708,22 +759,33 @@
             <span class="prelude-val">Ok</span>(Box::new(PangoStrFormatter))
         }
         <span class="string">&quot;bar&quot; </span>=&gt; {
-            <span class="kw">let </span><span class="kw-2">mut </span>width = DEFAULT_BAR_WIDTH;
+            <span class="kw">let </span><span class="kw-2">mut </span>vertical = DEFAULT_BAR_VERTICAL;
+            <span class="kw">let </span><span class="kw-2">mut </span>width = <span class="prelude-val">None</span>;
             <span class="kw">let </span><span class="kw-2">mut </span>max_value = DEFAULT_BAR_MAX_VAL;
             <span class="kw">for </span>arg <span class="kw">in </span>args {
                 <span class="kw">match </span>arg.key {
                     <span class="string">&quot;width&quot; </span>| <span class="string">&quot;w&quot; </span>=&gt; {
-                        width = arg.val.parse().error(<span class="string">&quot;Width must be a positive integer&quot;</span>)<span class="question-mark">?</span>;
+                        width = <span class="prelude-val">Some</span>(arg.val.parse().error(<span class="string">&quot;Width must be a positive integer&quot;</span>)<span class="question-mark">?</span>);
                     }
                     <span class="string">&quot;max_value&quot; </span>=&gt; {
                         max_value = arg.val.parse().error(<span class="string">&quot;Max value must be a number&quot;</span>)<span class="question-mark">?</span>;
+                    }
+                    <span class="string">&quot;vertical&quot; </span>| <span class="string">&quot;v&quot; </span>=&gt; {
+                        vertical = arg.val.parse().error(<span class="string">&quot;Vertical value must be a bool&quot;</span>)<span class="question-mark">?</span>;
                     }
                     other =&gt; {
                         <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">&quot;Unknown argument for &#39;bar&#39;: &#39;{other}&#39;&quot;</span>)));
                     }
                 }
             }
-            <span class="prelude-val">Ok</span>(Box::new(BarFormatter { width, max_value }))
+            <span class="prelude-val">Ok</span>(Box::new(BarFormatter {
+                width: width.unwrap_or(<span class="kw">match </span>vertical {
+                    <span class="bool-val">false </span>=&gt; DEFAULT_BAR_WIDTH_HORIZONTAL,
+                    <span class="bool-val">true </span>=&gt; DEFAULT_BAR_WIDTH_VERTICAL,
+                }),
+                max_value,
+                vertical,
+            }))
         }
         <span class="string">&quot;eng&quot; </span>=&gt; <span class="prelude-val">Ok</span>(Box::new(EngFormatter(EngFixConfig::from_args(args)<span class="question-mark">?</span>))),
         <span class="string">&quot;fix&quot; </span>=&gt; <span class="prelude-val">Ok</span>(Box::new(FixFormatter(EngFixConfig::from_args(args)<span class="question-mark">?</span>))),
@@ -761,31 +823,39 @@
     max_width: usize,
     rot_interval_ms: <span class="prelude-ty">Option</span>&lt;u64&gt;,
     init_time: <span class="prelude-ty">Option</span>&lt;Instant&gt;,
+    rot_separator: <span class="prelude-ty">Option</span>&lt;String&gt;,
 }
 
 <span class="kw">impl </span>Formatter <span class="kw">for </span>StrFormatter {
     <span class="kw">fn </span>format(<span class="kw-2">&amp;</span><span class="self">self</span>, val: <span class="kw-2">&amp;</span>Value) -&gt; <span class="prelude-ty">Result</span>&lt;String&gt; {
         <span class="kw">match </span>val {
             Value::Text(text) =&gt; {
-                <span class="kw">let </span>width = text.chars().count();
+                <span class="kw">let </span>text: Vec&lt;<span class="kw-2">&amp;</span>str&gt; = text.graphemes(<span class="bool-val">true</span>).collect();
+                <span class="kw">let </span>width = text.len();
                 <span class="prelude-val">Ok</span>(<span class="kw">match </span>(<span class="self">self</span>.rot_interval_ms, <span class="self">self</span>.init_time) {
                     (<span class="prelude-val">Some</span>(rot_interval_ms), <span class="prelude-val">Some</span>(init_time)) <span class="kw">if </span>width &gt; <span class="self">self</span>.max_width =&gt; {
-                        <span class="kw">let </span>width = width + <span class="number">1</span>; <span class="comment">// Now we include &#39;|&#39; at the end
+                        <span class="kw">let </span>rot_separator: Vec&lt;<span class="kw-2">&amp;</span>str&gt; = <span class="self">self
+                            </span>.rot_separator
+                            .as_deref()
+                            .unwrap_or(<span class="string">&quot;|&quot;</span>)
+                            .graphemes(<span class="bool-val">true</span>)
+                            .collect();
+                        <span class="kw">let </span>width = width + rot_separator.len(); <span class="comment">// Now we include `rot_separator` at the end
                         </span><span class="kw">let </span>step = (init_time.elapsed().as_millis() <span class="kw">as </span>u64 / rot_interval_ms)
                             <span class="kw">as </span>usize
                             % width;
                         <span class="kw">let </span>w1 = <span class="self">self</span>.max_width.min(width - step);
-                        text.chars()
-                            .chain(<span class="prelude-val">Some</span>(<span class="string">&#39;|&#39;</span>))
+                        text.iter()
+                            .chain(rot_separator.iter())
                             .skip(step)
                             .take(w1)
-                            .chain(text.chars())
+                            .chain(text.iter())
                             .take(<span class="self">self</span>.max_width)
                             .collect_pango_escaped()
                     }
                     <span class="kw">_ </span>=&gt; text
-                        .chars()
-                        .chain(repeat(<span class="string">&#39; &#39;</span>).take(<span class="self">self</span>.min_width.saturating_sub(width)))
+                        .iter()
+                        .chain(repeat(<span class="kw-2">&amp;</span><span class="string">&quot; &quot;</span>).take(<span class="self">self</span>.min_width.saturating_sub(width)))
                         .take(<span class="self">self</span>.max_width)
                         .collect_pango_escaped(),
                 })
@@ -822,10 +892,16 @@
 </span><span class="kw">pub struct </span>BarFormatter {
     width: usize,
     max_value: f64,
+    vertical: bool,
 }
 
-<span class="kw">const </span>VERTICAL_BAR_CHARS: [char; <span class="number">9</span>] = [
+<span class="kw">const </span>HORIZONTAL_BAR_CHARS: [char; <span class="number">9</span>] = [
     <span class="string">&#39; &#39;</span>, <span class="string">&#39;\u{258f}&#39;</span>, <span class="string">&#39;\u{258e}&#39;</span>, <span class="string">&#39;\u{258d}&#39;</span>, <span class="string">&#39;\u{258c}&#39;</span>, <span class="string">&#39;\u{258b}&#39;</span>, <span class="string">&#39;\u{258a}&#39;</span>, <span class="string">&#39;\u{2589}&#39;</span>,
+    <span class="string">&#39;\u{2588}&#39;</span>,
+];
+
+<span class="kw">const </span>VERTICAL_BAR_CHARS: [char; <span class="number">9</span>] = [
+    <span class="string">&#39; &#39;</span>, <span class="string">&#39;\u{2581}&#39;</span>, <span class="string">&#39;\u{2582}&#39;</span>, <span class="string">&#39;\u{2583}&#39;</span>, <span class="string">&#39;\u{2584}&#39;</span>, <span class="string">&#39;\u{2585}&#39;</span>, <span class="string">&#39;\u{2586}&#39;</span>, <span class="string">&#39;\u{2587}&#39;</span>,
     <span class="string">&#39;\u{2588}&#39;</span>,
 ];
 
@@ -834,12 +910,18 @@
         <span class="kw">match </span>val {
             Value::Number { <span class="kw-2">mut </span>val, .. } =&gt; {
                 val = (val / <span class="self">self</span>.max_value).clamp(<span class="number">0.</span>, <span class="number">1.</span>);
-                <span class="kw">let </span>chars_to_fill = val * <span class="self">self</span>.width <span class="kw">as </span>f64;
-                <span class="prelude-val">Ok</span>((<span class="number">0</span>..<span class="self">self</span>.width)
-                    .map(|i| {
-                        VERTICAL_BAR_CHARS[((chars_to_fill - i <span class="kw">as </span>f64).clamp(<span class="number">0.</span>, <span class="number">1.</span>) * <span class="number">8.</span>) <span class="kw">as </span>usize]
-                    })
-                    .collect())
+                <span class="kw">if </span><span class="self">self</span>.vertical {
+                    <span class="kw">let </span>vert_char = VERTICAL_BAR_CHARS[(val * <span class="number">8.</span>) <span class="kw">as </span>usize];
+                    <span class="prelude-val">Ok</span>((<span class="number">0</span>..<span class="self">self</span>.width).map(|<span class="kw">_</span>| vert_char).collect())
+                } <span class="kw">else </span>{
+                    <span class="kw">let </span>chars_to_fill = val * <span class="self">self</span>.width <span class="kw">as </span>f64;
+                    <span class="prelude-val">Ok</span>((<span class="number">0</span>..<span class="self">self</span>.width)
+                        .map(|i| {
+                            HORIZONTAL_BAR_CHARS
+                                [((chars_to_fill - i <span class="kw">as </span>f64).clamp(<span class="number">0.</span>, <span class="number">1.</span>) * <span class="number">8.</span>) <span class="kw">as </span>usize]
+                        })
+                        .collect())
+                }
             }
             other =&gt; <span class="prelude-val">Err</span>(Error::new_format(<span class="macro">format!</span>(
                 <span class="string">&quot;{} cannot be formatted with &#39;bar&#39; formatter&quot;</span>,
@@ -1182,5 +1264,4 @@
         <span class="macro">assert_eq!</span>(result, <span class="string">&quot; 10&quot;</span>);
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="i3status_rs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</code></pre></div></section></main></body></html>
